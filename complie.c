@@ -2,6 +2,7 @@
 #include "basicio.h"
 #include "string_list.h"
 #include "lex.h"
+#include "yacc.h"
 
 int complie(char *src_name,char *obj_name){
 
@@ -13,7 +14,7 @@ int complie(char *src_name,char *obj_name){
 	write_obj(obj_name,obj);
 
 	str->del(str);
-	list->del(list);
+	token_list_del(list);
 	root->del(root);
 	code->del(code);
 	obj->del(obj);
