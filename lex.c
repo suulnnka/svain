@@ -71,11 +71,12 @@ token_list * lex(string_list *str){
 		}
 	}
 
+	return root;
 }
 
 token_list * number_lex(string_list *str,token_list * node,char *c){
 	char ch = (*c);
-	node->token = number;
+	node->token = number_token;
 	node->number = 0;
 
 	do{
@@ -168,16 +169,16 @@ token_list * symbol_lex(string_list *str,token_list * node,char *c){
 		node->token = semicolon;
 		break;
 	case '+':
-		node->token = add;
+		node->token = add_token;
 		break;
 	case '-':
-		node->token = sub;
+		node->token = sub_token;
 		break;
 	case '*':
-		node->token = mul;
+		node->token = mul_token;
 		break;
 	case '/':
-		node->token = div;
+		node->token = div_token;
 		break;
 	case '=':
 		node->token = equal;

@@ -5,7 +5,7 @@
 
 enum token_type{
 
-	number,
+	number_token,
 
 	if_iden,		//if
 	then_iden,		//then
@@ -30,10 +30,10 @@ enum token_type{
 
 	odd_iden,		//odd
 
-	add,			//+
-	sub,			//-
-	mul,			//*
-	div,			///
+	add_token,		//+
+	sub_token,		//-
+	mul_token,		//*
+	div_token,		///
 
 	equal,			//=
 	not_equal,		//#
