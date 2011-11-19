@@ -45,9 +45,7 @@ enum token_type{
 	left_rnd,		//(
 	right_rnd,		//)
 
-	wrong_number,
-	wrong_iden,
-	wrong_symbol,
+	none_op,
 
 	eof_token,
 
@@ -73,17 +71,18 @@ struct token_list{
 	int number;
 	token_list *next;
 	token_list *prev;
+	int line;
 };
 
-int token_list_del(token_list *);
+int token_list_del(struct token_list *);
 
-token_list * lex(string_list *);
+struct token_list * lex(struct string_list *);
 
-token_list * number_lex(string_list *str,token_list * node,char *ch);
+struct token_list * number_lex(struct string_list *str,struct token_list * node,char *ch);
 
-token_list * string_lex(string_list *str,token_list * node,char *ch);
+struct token_list * string_lex(struct string_list *str,struct token_list * node,char *ch);
 
-token_list * symbol_lex(string_list *str,token_list * node,char *ch);
+struct token_list * symbol_lex(struct string_list *str,struct token_list * node,char *ch);
 
 
 #endif // LEX_H

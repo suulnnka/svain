@@ -3,9 +3,12 @@
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int token_list_del(token_list *list){
+int cur_line;
+
+int token_list_del(struct token_list *list){
 	if(list->next != NULL)
 		token_list_del(list->next);
 	if(list->str != NULL)
@@ -23,9 +26,9 @@ char * new_string(char *old_string,char ch){
 	return str;
 }
 
-token_list * new_token_node(){
-	token_list * node;
-	node = (token_list *)malloc(sizeof(token_list));
+struct token_list * new_token_node(){
+	struct token_list * node;
+	node = (struct token_list *)malloc(sizeof(struct token_list));
 	assert(node);
 
 	node->token = none_token;
@@ -33,14 +36,18 @@ token_list * new_token_node(){
 	node->prev = NULL;
 	node->str = NULL;
 	node->number = 0;
+	node->line = cur_line;
 
 	return node;
 }
 
-token_list * lex(string_list *str){
-	token_list *root = new_token_node();
+struct token_list * lex(struct string_list *str){
+
+	cur_line = 1;
+
+	struct token_list *root = new_token_node();
 	root->token = root_token;
-	token_list *current;
+	struct token_list *current;
 
 	current = new_token_node();
 	root->next = current;
@@ -61,6 +68,8 @@ token_list * lex(string_list *str){
 			break;
 		case space_s:
 			ch = str->next_char(str);
+			if(ch == '\n')
+				cur_line ++;
 			break;
 		case symbol_s:
 			current = symbol_lex(str,current,&ch);
@@ -69,12 +78,14 @@ token_list * lex(string_list *str){
 			current->token = eof_token;
 			break;
 		}
+		assert(current->token == none_token);
+		assert(current->prev->token != none_token);
 	}
 
 	return root;
 }
 
-token_list * number_lex(string_list *str,token_list * node,char *c){
+struct token_list * number_lex(struct string_list *str,struct token_list * node,char *c){
 	char ch = (*c);
 	node->token = number_token;
 	node->number = 0;
@@ -84,7 +95,7 @@ token_list * number_lex(string_list *str,token_list * node,char *c){
 		ch = str->next_char(str);
 	}while(get_lex_state(ch) == number_s);
 
-	token_list * next = new_token_node();
+	struct token_list * next = new_token_node();
 	next->token = none_token;
 
 	node->next = next;
@@ -95,7 +106,7 @@ token_list * number_lex(string_list *str,token_list * node,char *c){
 	return next;
 }
 
-token_list * string_lex(string_list *str,token_list * node,char *c){
+struct token_list * string_lex(struct string_list *str,struct token_list * node,char *c){
 	char ch = (*c);
 
 	node->token = iden;
@@ -134,7 +145,7 @@ token_list * string_lex(string_list *str,token_list * node,char *c){
 	if(!strcmp("ODD",node->str))
 		node->token = odd_iden;
 
-	token_list * next = new_token_node();
+	struct token_list * next = new_token_node();
 	next->token = none_token;
 
 	node->next = next;
@@ -146,7 +157,7 @@ token_list * string_lex(string_list *str,token_list * node,char *c){
 
 }
 
-token_list * symbol_lex(string_list *str,token_list * node,char *c){
+struct token_list * symbol_lex(struct string_list *str,struct token_list * node,char *c){
 	char ch = (*c);
 	char nch = str->next_char(str);
 
@@ -212,7 +223,7 @@ token_list * symbol_lex(string_list *str,token_list * node,char *c){
 
 	assert(node->token != symbol_token);
 
-	token_list * next = new_token_node();
+	struct token_list * next = new_token_node();
 	next->token = none_token;
 
 	node->next = next;

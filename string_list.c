@@ -5,11 +5,11 @@
 #include <string.h>
 #include <assert.h>
 
-string_list * new_string_list(){
+struct string_list * new_string_list(){
 
-	string_list *list = (string_list *)malloc(sizeof(string_list));
+	struct string_list *list = (struct string_list *)malloc(sizeof(struct string_list));
 	assert(list!=NULL);
-	list->root = (string_node *)malloc(sizeof(string_node));
+	list->root = (string_node *)malloc(sizeof(struct string_node));
 	assert(list->root != NULL);
 
 	memset(list->root->buf,0,BUF_SIZE);
@@ -30,14 +30,14 @@ string_list * new_string_list(){
 
 	return list;
 }
-int string_list_reset(string_list *list){
+int string_list_reset(struct string_list *list){
 	list->cur = list->root;
 	list->pos = 0;
 	list->is_over = 0;
 
 	return 0;
 }
-char string_list_next_char(string_list *list){
+char string_list_next_char(struct string_list *list){
 	assert(list->root->size > 0); // string_list is empty
 	if( list->is_over != 0 )
 		error("can't read more byte in the string_list.");
@@ -59,7 +59,7 @@ char string_list_next_char(string_list *list){
 
 	return list->cur->buf[0];
 }
-int string_list_write_str(string_list *list,char *s){
+int string_list_write_str(struct string_list *list,char *s){
 	int i;
 	assert( strlen(s) != 0 ); // 为什么会传进来空串
 	for(i = 0 ;i<strlen(s);i++){
@@ -69,7 +69,7 @@ int string_list_write_str(string_list *list,char *s){
 	}
 	return 0;
 }
-int string_list_write_char(string_list *list,char ch){
+int string_list_write_char(struct string_list *list,char ch){
 	list->is_over = 1;
 	if(list->cur->size < BUF_SIZE){
 		list->cur->buf[list->cur->size] = ch;
@@ -80,7 +80,7 @@ int string_list_write_char(string_list *list,char ch){
 	assert(list->cur->size == BUF_SIZE);
 
 	//if full.new a string_node
-	list->cur->next = (string_node *)malloc(sizeof(string_node));
+	list->cur->next = (string_node *)malloc(sizeof(struct string_node));
 	assert(list->cur->next != NULL);
 
 	list->cur = list->cur->next;
@@ -91,7 +91,7 @@ int string_list_write_char(string_list *list,char ch){
 
 	return 0;
 }
-int string_list_write_cpy(string_list *list,char *buf,int size){
+int string_list_write_cpy(struct string_list *list,char *buf,int size){
 	list->is_over = 1;
 	if(list->cur == list->root){
 		assert(list->cur->size == 0);
@@ -99,7 +99,7 @@ int string_list_write_cpy(string_list *list,char *buf,int size){
 		assert(list->cur->size == BUF_SIZE);
 		assert(list->cur->next == NULL);
 
-		list->cur->next = (string_node *)malloc(sizeof(string_node));
+		list->cur->next = (string_node *)malloc(sizeof(struct string_node));
 		assert(list->cur->next != NULL);
 		list->cur = list->cur->next;
 		list->cur->size = 0;
@@ -110,7 +110,7 @@ int string_list_write_cpy(string_list *list,char *buf,int size){
 	return 0;
 }
 
-int string_list_read_cpy(string_list *list,char *buf){
+int string_list_read_cpy(struct string_list *list,char *buf){
 	assert(list->root->size > 0);
 	assert(list->cur->size > 0);
 	if(list->is_over)
@@ -143,7 +143,7 @@ int string_list_read_cpy(string_list *list,char *buf){
 	return list->pos;
 }
 
-int string_list_del(string_list *list){
+int string_list_del(struct string_list *list){
 	string_node_del(list->root);
 	free(list);
 	return 0;

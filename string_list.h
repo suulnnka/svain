@@ -8,13 +8,13 @@ struct string_list{
 	string_node *cur;
 	int pos;
 	int is_over;
-	int (*reset)(string_list *);
-	char (*next_char)(string_list *);
-	int (*write_str)(string_list * ,char *);
-	int (*write_char)(string_list *,char);
-	int (*write_cpy)(string_list *,char *,int);
-	int (*read_cpy)(string_list *,char *);
-	int (*del)(string_list *);
+	int (*reset)(struct string_list *);
+	char (*next_char)(struct string_list *);
+	int (*write_str)(struct string_list * ,char *);
+	int (*write_char)(struct string_list *,char);
+	int (*write_cpy)(struct string_list *,char *,int);
+	int (*read_cpy)(struct string_list *,char *);
+	int (*del)(struct string_list *);
 };
 struct string_node{
 	char buf[BUF_SIZE];
@@ -22,14 +22,14 @@ struct string_node{
 	string_node * next;
 };
 
-string_list * new_string_list();
-int string_list_reset(string_list *);
-char string_list_next_char(string_list *);
-int string_list_write_str(string_list *,char *);
-int string_list_write_char(string_list *,char);
-int string_list_write_cpy(string_list *,char *,int);
-int string_list_read_cpy(string_list *,char *);
-int string_list_del(string_list *);
+struct string_list * new_string_list();
+int string_list_reset(struct string_list *);
+char string_list_next_char(struct string_list *);
+int string_list_write_str(struct string_list *,char *);
+int string_list_write_char(struct string_list *,char);
+int string_list_write_cpy(struct string_list *,char *,int);
+int string_list_read_cpy(struct string_list *,char *);
+int string_list_del(struct string_list *);
 
 
 #endif // STRING_LIST_H

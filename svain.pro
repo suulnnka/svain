@@ -22,7 +22,7 @@ SOURCES += \
     basicio.c \
     string_list.c \
     lex.c \
-    yacc.c
+    parsing.c
 
 HEADERS += \
     complie.h \
@@ -31,7 +31,11 @@ HEADERS += \
     basicio.h \
     string_list.h \
     lex.h \
-    yacc.h
+    parsing.h
+
+
+
+
 
 
 

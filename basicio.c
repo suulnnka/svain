@@ -7,14 +7,14 @@
 #include "base.h"
 #include "string_list.h"
 
-string_list * read_src(char *src_name){
+struct string_list * read_src(char *src_name){
 	FILE *fp = fopen(src_name,"rb");
 	if(fp == NULL){
 		printf("src_file_name : %s\n",src_name);
 		error("no such file.");
 	}
 
-	string_list * list = new_string_list();
+	struct string_list * list = new_string_list();
 
 	while(!feof(fp)){
 		char buf[BUF_SIZE];
@@ -28,7 +28,7 @@ string_list * read_src(char *src_name){
 	//TODO 转unicode
 	return list;
 }
-int write_obj(char *obj_name,string_list *list){
+int write_obj(char *obj_name,struct string_list *list){
 	FILE *fp = fopen(obj_name,"wb");
 	assert(fp);
 	char buf[BUF_SIZE];
